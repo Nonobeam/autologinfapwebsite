@@ -5,15 +5,19 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from time import sleep
+from flask import Flask
 import os
 
 
+# text = textract.process("./user-pass.doc")
+# sleep(2)
+
 login_page = "https://fap.fpt.edu.vn/Default.aspx"
 # page = "https://fap.fpt.edu.vn/Report/ScheduleOfWeek.aspx"
-calendar_page = 
 
-# email = "phucnhse183026@fpt.edu.vn"
-# password = "Haha123456"
+
+email = "phucnhse183026@fpt.edu.vn"
+password = "Haha123456"
 
 options = Options()
 options.add_argument("--window-size=1920,1080")
@@ -23,20 +27,33 @@ driver.get(login_page)
 
 #choose the campus
 
+#select campus
 driver.find_element("xpath", "//select[@name='ctl00$mainContent$ddlCampus']").click()
 sleep(1)
 
+#select HCM campus
 driver.find_element("xpath", "//option[@value='4']").click()
 sleep(1)
 
+#select Sign in button
 driver.find_element("xpath","//div[@class='abcRioButtonContentWrapper']").click()
-sleep(20)
-
-driver.find_element("xpath","//a[@href='Student.aspx']").click()
 sleep(1)
+
+windows = driver.window_handles
+driver.switch_to.window(windows[1])
+
+driver.find_element(By.NAME, "identifier").send_keys(email)
+sleep(2)
+driver.find_element(By.ID, "identifierNext").click()
+sleep(2)
+driver.find_element(By.NAME, "password").send_keys(password)
+sleep(2)
+driver.find_element(By.ID, "passwordNext").click()
+sleep(15)
+
+driver.switch_to.window(windows[0])
 
 driver.find_element("xpath","//a[@href='Report/ScheduleOfWeek.aspx']").click()
-sleep(1)
 
 
 
